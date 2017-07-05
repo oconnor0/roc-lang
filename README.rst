@@ -1,4 +1,6 @@
-# roc-lang
+********
+roc-lang
+********
 
 A Lua written in Rust. Maybe.
 
