@@ -1,0 +1,121 @@
+// Copyright (c) 2017, Matthew O'Connor
+use ast::*;
+
+grammar;
+
+//
+//
+//
+match {
+  "and" => AND,
+  "break" => BREAK,
+  "do" => DO,
+  "else" => ELSE,
+  "elseif" => ELSEIF,
+  "end" => END,
+  "false" => FALSE,
+  "for" => FOR,
+  "function" => FUNCTION,
+  "goto" => GOTO,
+  "if" => IF,
+  "in" => IN,
+  "local" => LOCAL,
+  "nil" => NIL,
+  "not" => NOT,
+  "or" => OR,
+  "repeat" => REPEAT,
+  "return" => RETURN,
+  "then" => THEN,
+  "true" => TRUE,
+  "until" => UNTIL,
+  "while" => WHILE,
+
+  "=" => EQUAL,
+  "+" => PLUS,
+  "-" => MINUS,
+  "*" => ASTERISK,
+  "/" => SLASH,
+  "//" => SLASHSLASH,
+  "^" => CARET,
+  "%" => PERCENT,
+  "&" => AMPERSAND,
+  "|" => PIPE,
+  ">>" => SHR,
+  "<<" => SHL,
+  ".." => DOTDOT,
+  "<" => LESS,
+  "<=" => LESSEQUAL,
+  ">" => GREATER,
+  "=>" => GREATEREQUAL,
+  "==" => EQUALEQUAL,
+  "~=" => TILDEEQUAL,
+  "#" => HASH,
+  "~" => TILDE,
+  "..." => ELLIPSIS,
+} else {
+  r"[a-zA-Z_]+[a-zA-Z_0-9]*" => NAME,
+}
+
+pub Name: Name = {
+  <NAME> => Name::new(<>),
+};
+
+// pub Chunk: Chunk = {
+//   ()
+// };
+
+pub Expr: Expr = {
+  // Nil,
+  // False,
+  // True,
+  // Numeral(Numeral),
+  // LiteralString(LiteralString),
+  ELLIPSIS => Expr::Ellipsis,
+  // FunctionDef,
+  // TableCtor(TableCtor),
+  // BinOp(Box<Expr>, Box<Expr>),
+  // UnOp(Box<Expr>),
+};
+
+/// field ::= ‘[’ exp ‘]’ ‘=’ exp | Name ‘=’ exp | exp
+pub Field: Field = {
+  <n:Name> EQUAL <e:Expr> => Field::NameAssign(n, e),
+  // NameAssign(Name, Expr),
+  // ExprAssign(Expr, Expr),
+  // Expr(Expr),
+};
+
+/// binop ::=  ‘+’ | ‘-’ | ‘*’ | ‘/’ | ‘//’ | ‘^’ | ‘%’ |  ‘&’ | ‘~’ | ‘|’ |
+///            ‘>>’ | ‘<<’ | ‘..’ |  ‘<’ | ‘<=’ | ‘>’ | ‘=>’ | ‘==’ | ‘~=’ |
+///             and | or
+pub BinOp: BinOp = {
+  PLUS => BinOp::Add,
+  MINUS => BinOp::Sub,
+  ASTERISK => BinOp::Mul,
+  SLASH => BinOp::Div,
+  SLASHSLASH => BinOp::IDiv,
+  CARET => BinOp::Pow,
+  PERCENT => BinOp::Mod,
+  AMPERSAND => BinOp::BitAnd,
+  TILDE => BinOp::BitXor,
+  PIPE => BinOp::BitOr,
+  SHR => BinOp::ShR,
+  SHL => BinOp::ShL,
+  DOTDOT => BinOp::Concat,
+  LESS => BinOp::Less,
+  LESSEQUAL => BinOp::LessEqual,
+  GREATER => BinOp::Greater,
+  GREATEREQUAL => BinOp::GreaterEqual,
+  EQUALEQUAL => BinOp::Equal,
+  TILDEEQUAL => BinOp::NotEqual,
+  AND => BinOp::And,
+  OR => BinOp::Or,
+};
+
+/// unop ::= ‘-’ | not | ‘#’ | ‘~’
+pub UnOp: UnOp = {
+  MINUS => UnOp::Negate,
+  NOT => UnOp::Not,
+  HASH => UnOp::Len,
+  TILDE => UnOp::BitNot,
+};

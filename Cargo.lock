@@ -1,6 +1,6 @@
 [root]
 name = "roc-lang"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "lalrpop 0.13.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "lalrpop-util 0.13.1 (registry+https://github.com/rust-lang/crates.io-index)",
